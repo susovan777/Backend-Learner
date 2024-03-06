@@ -1,0 +1,6 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# I created this file mannualy to ignore the node_modules directory
+
+# dependencies
+/node_modules
