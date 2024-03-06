@@ -1,0 +1,16 @@
+{
+  "name": "mern-2",
+  "version": "1.0.0",
+  "description": "Learning MERN",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/susovan777/Backend-Learner"
+  },
+  "author": "susovan777",
+  "license": "ISC"
+}
