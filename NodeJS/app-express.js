@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const port = 8081;
 
-app.get('/', (req, res) => {
-    res.send('Hello world, from my local server');
+const todos = ["Complete nodeJS byte", "Play COC" ]
+
+app.get('/todos', (req, res) => {
+    // res.send('Hello world, from my local server');
+    res.send(todos);
 });
 
 app.listen(port, () => {
