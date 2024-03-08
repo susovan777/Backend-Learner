@@ -34,6 +34,11 @@ app.delete("/todos", (req, res) => {
   }
 });
 
+// all requests other than GET, POST & DELETE
+app.all("/todos", (request, response) => {
+  response.status(501).send();
+});
+
 app.listen(port, () => {
   console.log(`Express server started in the port ${port}`);
 });
