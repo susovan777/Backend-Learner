@@ -21,6 +21,19 @@ app.post("/todos", (req, res) => {
   res.status(201).end();
 });
 
+// delete request
+// curl -v -X DELETE -d '{"name":"Plan for next week"}' http://localhost:8081/todos
+app.delete("/todos", (req, res) => {
+  let deleteTodo = req.body.name;
+  console.log(deleteTodo);
+  for (let i = 0; i < todos.length; i++) {
+    if (todos[i] === deleteTodo) {
+      todos.slice(i, 1);
+      response.status(204).send();
+    }
+  }
+});
+
 app.listen(port, () => {
   console.log(`Express server started in the port ${port}`);
 });
