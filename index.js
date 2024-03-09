@@ -4,7 +4,7 @@
 // console.log("nodemon working fine!");
 
 const http = require("http");
-const currencies = require('./currencies.json');
+const currencies = require("./currencies.json");
 const port = 8081;
 
 const server = http.createServer((req, res) => {
@@ -25,6 +25,27 @@ const server = http.createServer((req, res) => {
     res.end();
   } */
 
+  console.log(req.url);
+  const urlSplit = req.url.split("/");
+  const currencyCode = urlSplit[2];
+//   console.log(currencyCode);
+
+  // currency root
+  if (currencyCode) {
+    const key = currencies.data.find(
+      (x) => x.id?.toLocaleLowerCase() === currencyCode.toLocaleLowerCase()
+    );
+    if (key) {
+      res.writeHead(200, { "Content-type": "application/json" });
+      res.write(JSON.stringify(key));
+      res.end();
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  }
+
+  // default root
   switch (req.url) {
     case "/": {
       res.writeHead(200, { "Content-type": "text/html" });
@@ -33,6 +54,7 @@ const server = http.createServer((req, res) => {
       break;
     }
 
+    // all currency root
     case "/currencies": {
       res.writeHead(200, { "Content-type": "application/json" });
       res.write(JSON.stringify(currencies));
@@ -41,7 +63,7 @@ const server = http.createServer((req, res) => {
     }
 
     default: {
-      res.writeHead(404);
+    //   res.writeHead(404);
       res.end();
     }
   }
