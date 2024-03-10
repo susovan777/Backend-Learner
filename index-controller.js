@@ -1,5 +1,6 @@
 const express = require('express');
 const currencies = require('./Controller/currencies.controller');
+const { getAllUsers, getUserByUuid } = require('./Controller/users.controller');
 
 const port = 8081;
 const app = express();
@@ -15,6 +16,12 @@ app.get('/currencies', currencies.getCurrencyList);
 
 // currency with symbol
 app.get('/currencies/:symbol', currencies.getCurrencyWithSymbol)
+
+// user datas
+app.get('/users', getAllUsers);
+
+// user data by UUID
+app.get('/users/:uuid', getUserByUuid);
 
 app.listen(port, () => {
     console.log("Server started at the port", port);
