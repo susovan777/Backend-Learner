@@ -31,7 +31,7 @@ app.get("/currency", (req, res) => {
 // using request.param
 app.get("/currency/:symbol", (req, res) => {
   console.log("Cuurent root: /currency/symbol");
-  console.log(req.param);
+  console.log(req.params);
 
   const match = currencies.data.find(
     (item) =>
