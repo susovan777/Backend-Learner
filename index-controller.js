@@ -1,6 +1,6 @@
 const express = require('express');
 const currencies = require('./Controller/currencies.controller');
-const { getAllUsers, getUserByUuid } = require('./Controller/users.controller');
+const { getAllUsers, getUserByUuid, searchUsersByQuery } = require('./Controller/users.controller');
 
 const port = 8081;
 const app = express();
@@ -19,6 +19,9 @@ app.get('/currencies/:symbol', currencies.getCurrencyWithSymbol)
 
 // user datas
 app.get('/users', getAllUsers);
+
+// search user by query
+app.get('/users/search', searchUsersByQuery);
 
 // user data by UUID
 app.get('/users/:uuid', getUserByUuid);
