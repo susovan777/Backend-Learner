@@ -27,5 +27,5 @@ app.get('/users/search', searchUsersByQuery);
 app.get('/users/:uuid', getUserByUuid);
 
 app.listen(port, () => {
-    console.log("Server started at the port", port);
+    console.log("Using Controller: Server started at the port", port);
 })
