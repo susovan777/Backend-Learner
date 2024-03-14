@@ -1,4 +1,6 @@
 const userDatas = require("../users.json");
+const getQueryErrors = require("../Validators/users.validators");
+/* 
 // adding Joi validator
 const joi = require("joi");
 // creating joi schema
@@ -10,6 +12,7 @@ const schema = joi
     age: joi.number().integer().min(0).max(100),
   }) // specifying atleast one of the key shoud be present
   .or("gender", "age"); 
+ */
 
 const getAllUsers = (req, res) => {
   console.log("Current path: /users");
@@ -33,10 +36,17 @@ const searchUsersByQuery = (req, res) => {
   const age = req.query.age;
   console.log(`Current path: /search where age: ${age} and gender: ${gender}`);
 
+  /* 
   // adding validation using joi
   const result = schema.validate({ gender, age });
   if (result.error) {
     return res.status(422).json(result.error);
+  }
+ */
+  const errors = getQueryErrors({ gender, age });
+
+  if (errors) {
+    return res.status(422).json(errors);
   }
 
   // removed the manual validation
