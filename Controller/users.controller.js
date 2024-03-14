@@ -22,17 +22,35 @@ const searchUsersByQuery = (req, res) => {
   const age = req.query.age;
   console.log(`Current path: /search where age: ${age} and gender: ${gender}`);
 
-  if (gender && age) {
+  if (!age && !gender) {
+    res.status(422).json({
+      message: "Missing Search Parameters, search using age and/or gender",
+    });
+  } else if (gender && age) {
     const result = userDatas.data.filter(
       (user) => user.gender === gender && user.dob.age >= age
     );
     res.json(result);
   } else if (gender) {
-    const result = userDatas.data.filter((user) => user.gender === gender);
-    res.json(result);
+    if (!["male", "female"].includes(gender.toLowerCase())) {
+      res
+        .status(422)
+        .json({ message: "Gender to search can either be 'male' or 'female'" });
+    } else {
+      const result = userDatas.data.filter((user) => user.gender === gender);
+      res.json(result);
+    }
   } else if (age) {
-    const result = userDatas.data.filter((user) => user.dob.age >= age);
-    res.json(result);
+    if (!Number(age)) {
+      res.status(422).json({ message: "Age parameter should be a number" });
+    } else if (age < 0 || age > 100) {
+      res.status(422).json({
+        message: "Age out of bounds. It should be a number between 0 and 100",
+      });
+    } else {
+      const result = userDatas.data.filter((user) => user.dob.age >= age);
+      res.json(result);
+    }
   } else res.sendStatus(404);
 };
 
