@@ -5,7 +5,7 @@ const blogRouter = require("./Routes/blogs.routes");
 const port = 3000;
 const app = express();
 
-const DB_URI = "mongodb://127.0.0.1:27017";
+const DB_URI = "mongodb://127.0.0.1:27017/Blogs";
 // to parse body object send we need middleware that comes with express
 app.use(express.json());
 
