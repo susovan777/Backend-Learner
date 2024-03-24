@@ -24,6 +24,18 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
+const deleteBlog = async (req, res) => {
+  const id = req.params.id;
+  console.log(`Deleting the blog with id: ${id}`);
+  try {
+    console.log(`Blog with id: ${id} has been deleted successfully`);
+    const result = await Blogs.findOneAndDelete({ _id: id });
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ messgae: "Could not delete the blog", error: `${e}` });
+  }
+};
+
 const blogHomepage = (req, res) => {
   res.status(200).json({ message: "Success", note: "Coming from controller" });
   // res.send("<h1>Blogs Homepage</h1>").end();
@@ -33,4 +45,10 @@ const loginUser = (req, res) => {
   res.send("<h2>This is login page</h2>").end();
 };
 
-module.exports = { createNewBlog, getAllBlogs, blogHomepage, loginUser };
+module.exports = {
+  createNewBlog,
+  getAllBlogs,
+  blogHomepage,
+  deleteBlog,
+  loginUser,
+};
