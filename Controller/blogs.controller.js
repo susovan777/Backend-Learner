@@ -1,6 +1,12 @@
 const Blogs = require("../Models/blogs.model");
 
-// creating a new post and saving to DB
+const blogHomepage = (req, res) => {
+  res.status(200).json({ message: "Success", note: "Coming from controller" });
+  // res.send("<h1>Blogs Homepage</h1>").end();
+};
+
+//  🚩 CRUD operation 👉
+// CREATE: creating a new post and saving to DB
 const createNewBlog = async (req, res) => {
   console.log(req.body);
   //   const newBlogDoc = new Blogs({ title: "My First blog" }); // default doc
@@ -12,7 +18,7 @@ const createNewBlog = async (req, res) => {
   //   res.sendStatus(200);
 };
 
-// get all docs from the DB and sending to client
+// READ: get all docs from the DB and sending to client
 const getAllBlogs = async (req, res) => {
   console.log("Current path /blogs/all");
   try {
@@ -24,6 +30,23 @@ const getAllBlogs = async (req, res) => {
   }
 };
 
+// UPDATE: updating the doc
+const updateBlogWithID = async (req, res) => {
+  const { id } = req.params;
+  console.log(`Updating the blog with id: ${id}`);
+  try {
+    const update = req.body;
+    const result = await Blogs.findOneAndUpdate({ _id: id }, update, {
+      new: true,
+    });
+    console.log(`Blog with id: ${id} has been updated successfully`);
+    res.json(result);
+  } catch (e) {
+    res.status(500).json({ message: "Could not save the blog", error: `${e}` });
+  }
+};
+
+// DELETE: deleting the blog through network call using id
 const deleteBlog = async (req, res) => {
   const id = req.params.id;
   console.log(`Deleting the blog with id: ${id}`);
@@ -32,13 +55,10 @@ const deleteBlog = async (req, res) => {
     const result = await Blogs.findOneAndDelete({ _id: id });
     res.json(result);
   } catch (e) {
-    res.status(500).json({ messgae: "Could not delete the blog", error: `${e}` });
+    res
+      .status(500)
+      .json({ message: "Could not delete the blog", error: `${e}` });
   }
-};
-
-const blogHomepage = (req, res) => {
-  res.status(200).json({ message: "Success", note: "Coming from controller" });
-  // res.send("<h1>Blogs Homepage</h1>").end();
 };
 
 const loginUser = (req, res) => {
@@ -48,6 +68,7 @@ const loginUser = (req, res) => {
 module.exports = {
   createNewBlog,
   getAllBlogs,
+  updateBlogWithID,
   blogHomepage,
   deleteBlog,
   loginUser,
