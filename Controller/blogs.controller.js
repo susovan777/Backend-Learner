@@ -3,6 +3,8 @@ const {
   findAllBlogs,
   createBlogDocument,
 } = require("../Services/blogs.services");
+const blogServices = require("../Services/blogs.services");
+const blogServiceInstance = new blogServices();
 
 const blogHomepage = (req, res) => {
   res.status(200).json({ message: "Success", note: "Coming from controller" });
@@ -16,7 +18,7 @@ const createNewBlog = async (req, res) => {
   //   const newBlogDoc = new Blogs({ title: "My First blog" }); // default doc
   // const newBlogDoc = new Blogs({ ...req.body }); // through POST
   // const result = await newBlogDoc.save(); // saving to DB
-  const result = await createBlogDocument({ ...req.body });
+  const result = await blogServiceInstance.create({ ...req.body });
   console.log(result);
   res.json(result);
   //   res.status(200).json({ message: "Create a new blog" });
@@ -28,7 +30,8 @@ const getAllBlogs = async (req, res) => {
   console.log("Current path /blogs/all");
   try {
     // const blogs = await Blogs.find({}); // 👈 moved to blogs.service.js
-    const blogs = await findAllBlogs();
+    // const blogs = await findAllBlogs();
+    const blogs = await blogServiceInstance.find();
     res.json(blogs);
   } catch (e) {
     console.log("Failed to save document", e);
