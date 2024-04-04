@@ -50,3 +50,19 @@ const blogModel = mongoose.model("Blogs", blogSchema, "MyBlogs");
 
 // exporting model
 module.exports = blogModel;
+
+// ======================================================
+/* 
+👉 create a new blog post
+{
+  "title": "This is a blog title",
+  "authors": [
+    {
+    "fullName": "Susovan",
+    "email": "suv@test.com",
+    "image": "https://www.npmjs.com/package/validator"
+  }
+],
+  "content": "Blog created by POST method"
+} 
+*/

@@ -2,6 +2,7 @@ const blogPages = require("../Controller/blogs.controller");
 const router = require("express").Router();
 
 router.get("/", blogPages.blogHomepage);
+router.get("/search", blogPages.searchBlog); // search blog by query
 // router.get("/login", blogPages.loginUser);
 
 // CRUD operation on the router

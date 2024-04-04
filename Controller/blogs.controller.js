@@ -61,6 +61,26 @@ const deleteBlog = async (req, res) => {
   }
 };
 
+// search blog by query
+const searchBlog = async (req, res) => {
+  const { title, author } = req.query;
+  console.log(
+    `Searching for blog with the query: '${title}' and author: '${author}'`
+  );
+  try {
+    const result = await Blogs.find({
+      $or: [
+        // { title }, // search only by title
+        { title: { $regex: new RegExp(title), $options: "gi" } }, // search by text that part of the title
+        { authors: { $elemMatch: { email: author } } }, // search by email only
+      ],
+    });
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({ message: "Could not fetch the blog" });
+  }
+};
+
 const loginUser = (req, res) => {
   res.send("<h2>This is login page</h2>").end();
 };
@@ -71,5 +91,6 @@ module.exports = {
   updateBlogWithID,
   blogHomepage,
   deleteBlog,
+  searchBlog,
   loginUser,
 };
