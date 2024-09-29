@@ -35,8 +35,26 @@ const server = http.createServer((req, res) => {
   const path = req.url;
 
   if (path === "/" || path === "/home") res.end("This is HOME page");
-  else if (path === "/product") res.end("This is PRODUCT page");
-  else res.end("Page not found!");
+  else if (path === "/product") {
+    res.writeHead(200, {
+      "content-type": "text/html",
+    });
+    res.end("<h1>This is PRODUCT page</h1>");
+  } else if (path === "/api") {
+    readFile("./dev-data/data.json", "utf-8", (error, data) => {
+      const apiData = JSON.parse(data); // json string to object
+      console.log(apiData);
+      res.writeHead(200, {
+        "content-type": "application/json",
+      });
+      res.end(data);
+    });
+  } else {
+    res.writeHead(404, {
+      "content-type": "text/html",
+    });
+    res.end("<h1>Page not found!</h1>");
+  }
 });
 
 server.listen(3000, () => {
