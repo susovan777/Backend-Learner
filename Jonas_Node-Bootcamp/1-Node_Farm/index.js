@@ -30,26 +30,57 @@ const textOutput = `This is what we know about Avocado: ${text}. \nCreated on ${
 // //////////////////////     SERVER     /////////////////////////////
 import http from "node:http";
 
+// Reading the data synchronously only once
+const overview = readFileSync("./templates/overview.html", "utf-8");
+const card = readFileSync("./templates/card.html", "utf-8");
+const product = readFileSync("./templates/product.html", "utf-8");
+const data = readFileSync("./dev-data/data.json", "utf-8");
+const dataObject = JSON.parse(data); // json string to object
+
+const replacetemplate = (temp, product) => {
+  let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
+  output = output.replace(/{%IMAGE%}/g, product.image);
+  output = output.replace(/{%PRICE%}/g, product.price);
+  output = output.replace(/{%FROM%}/g, product.from);
+  output = output.replace(/{%NUTRIENTS%}/g, product.nutrients);
+  output = output.replace(/{%QUANTITY%}/g, product.quantity);
+  output = output.replace(/{%DESCRIPTION%}/g, product.description);
+  output = output.replace(/{%ID%}/g, product.id);
+
+  if (!product.organic)
+    output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
+  return output;
+};
 const server = http.createServer((req, res) => {
   //   console.log(req.url);
   const path = req.url;
 
-  if (path === "/" || path === "/home") res.end("This is HOME page");
+  //   Overview Page
+  if (path === "/" || path === "/overview") {
+    res.writeHead(200, {
+      "content-type": "text/html",
+    });
+
+    const cardHtml = dataObject.map((el) => replacetemplate(card, el)).join("");
+    const output = overview.replace("{%PRODUCT_CARD%}", cardHtml);
+    res.end(output);
+  }
+  //   Product Page
   else if (path === "/product") {
     res.writeHead(200, {
       "content-type": "text/html",
     });
-    res.end("<h1>This is PRODUCT page</h1>");
-  } else if (path === "/api") {
-    readFile("./dev-data/data.json", "utf-8", (error, data) => {
-      const apiData = JSON.parse(data); // json string to object
-      console.log(apiData);
-      res.writeHead(200, {
-        "content-type": "application/json",
-      });
-      res.end(data);
+    res.end(product);
+  }
+  //   API Page
+  else if (path === "/api") {
+    res.writeHead(200, {
+      "content-type": "application/json",
     });
-  } else {
+    res.end(data);
+  }
+  //   Not Found Page
+  else {
     res.writeHead(404, {
       "content-type": "text/html",
     });
