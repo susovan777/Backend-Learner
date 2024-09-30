@@ -29,6 +29,7 @@ const textOutput = `This is what we know about Avocado: ${text}. \nCreated on ${
 
 // //////////////////////     SERVER     /////////////////////////////
 import http from "node:http";
+import url from "node:url";
 
 // Reading the data synchronously only once
 const overview = readFileSync("./templates/overview.html", "utf-8");
@@ -52,38 +53,35 @@ const replacetemplate = (temp, product) => {
   return output;
 };
 const server = http.createServer((req, res) => {
-  //   console.log(req.url);
-  const path = req.url;
+  // const pathname = req.url;
+  console.log(req.url);
+  // console.log(url.parse(req.url, true));
+  const { query, pathname } = url.parse(req.url, true);
+  // console.log(query, pathname);
 
   //   Overview Page
-  if (path === "/" || path === "/overview") {
-    res.writeHead(200, {
-      "content-type": "text/html",
-    });
+  if (pathname === "/" || pathname === "/overview") {
+    res.writeHead(200, { "content-type": "text/html" });
 
     const cardHtml = dataObject.map((el) => replacetemplate(card, el)).join("");
     const output = overview.replace("{%PRODUCT_CARD%}", cardHtml);
     res.end(output);
   }
   //   Product Page
-  else if (path === "/product") {
-    res.writeHead(200, {
-      "content-type": "text/html",
-    });
-    res.end(product);
+  else if (pathname === "/product") {
+    res.writeHead(200, { "content-type": "text/html" });
+    const productData = dataObject[query.id];
+    const output = replacetemplate(product, productData);
+    res.end(output);
   }
   //   API Page
-  else if (path === "/api") {
-    res.writeHead(200, {
-      "content-type": "application/json",
-    });
+  else if (pathname === "/api") {
+    res.writeHead(200, { "content-type": "application/json" });
     res.end(data);
   }
   //   Not Found Page
   else {
-    res.writeHead(404, {
-      "content-type": "text/html",
-    });
+    res.writeHead(404, { "content-type": "text/html" });
     res.end("<h1>Page not found!</h1>");
   }
 });
