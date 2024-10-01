@@ -30,6 +30,7 @@ const textOutput = `This is what we know about Avocado: ${text}. \nCreated on ${
 // //////////////////////     SERVER     /////////////////////////////
 import http from "node:http";
 import url from "node:url";
+import slugify from "slugify";
 
 // Reading the data synchronously only once
 const overview = readFileSync("./templates/overview.html", "utf-8");
@@ -52,6 +53,13 @@ const replacetemplate = (temp, product) => {
     output = output.replace(/{%NOT_ORGANIC%}/g, "not-organic");
   return output;
 };
+
+// console.log(slugify("Fresh Avocados", { lower: true }));
+const slugString = dataObject.map((item) =>
+  slugify(item.productName, { lower: true })
+);
+console.log(slugString);
+
 const server = http.createServer((req, res) => {
   // const pathname = req.url;
   console.log(req.url);
