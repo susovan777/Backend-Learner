@@ -1,0 +1,19 @@
+{
+  "name": "natours-api",
+  "version": "1.0.0",
+  "description": "\"Learning Express: a node.js framework\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "type": "module",
+  "author": "Susovan S",
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "dependencies": {
+    "express": "^4.21.0"
+  }
+}
