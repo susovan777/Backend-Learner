@@ -4,21 +4,16 @@ const app = express();
 
 app.use(express.json()); // middleware
 
-/* app.get("/", (req, res) => {
-  //   res.send("Hello world!");
-  res.status(200).json({ message: "Hello from the server", app: "Natours" });
-}); */
-
 const tours = JSON.parse(readFileSync("./data/tours-simple.json"));
-// GET request
-app.get("/api/v1/tours", (req, res) => {
+
+// 🙂 Refactoring Codes
+const getAllTours = (req, res) => {
   res
     .status(200)
     .json({ status: "success", result: tours.length, data: { tours } });
-});
+};
 
-// Handling URL paramaeters
-app.get("/api/v1/tours/:id", (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params);
   const id = req.params.id * 1; // req.params is a string, coverted to number
   const tour = tours.find((el) => el.id === id);
@@ -27,10 +22,9 @@ app.get("/api/v1/tours/:id", (req, res) => {
   if (!tour)
     res.status(404).json({ status: "Not found!", message: "Invalid ID" });
   res.status(200).json({ status: "Success", data: tour });
-});
+};
 
-// POST request
-app.post("/api/v1/tours", (req, res) => {
+const createTour = (req, res) => {
   console.log(req.body);
   const newId = tours[tours.length - 1].id + 1;
   const newTour = Object.assign({ id: newId }, req.body);
@@ -44,10 +38,9 @@ app.post("/api/v1/tours", (req, res) => {
       },
     });
   });
-});
+};
 
-// PATCH request
-app.patch("/api/v1/tours/:id", (req, res) => {
+const updateTour = (req, res) => {
   if (req.params.id * 1 > tours.length)
     res.status(404).json({ status: "Not found!", message: "Invalid ID" });
   res.status(200).json({
@@ -57,10 +50,9 @@ app.patch("/api/v1/tours/:id", (req, res) => {
       tour: "Tour update here",
     },
   });
-});
+};
 
-// DELETE request
-app.delete("/api/v1/tours/:id", (req, res) => {
+const deleteTour = (req, res) => {
   if (req.params.id * 1 > tours.length)
     res.status(404).json({ status: "Not found!", message: "Invalid ID" });
   res.status(204).json({
@@ -68,7 +60,21 @@ app.delete("/api/v1/tours/:id", (req, res) => {
     message: "No content",
     data: null,
   });
-});
+};
+
+// app.get("/api/v1/tours", getAllTours);
+// app.get("/api/v1/tours/:id", getTour);
+// app.post("/api/v1/tours", createTour);
+// app.patch("/api/v1/tours/:id", updateTour);
+// app.delete("/api/v1/tours/:id", deleteTour);
+
+app.route("/api/v1/tours").get(getAllTours).post(createTour);
+
+app
+  .route("/api/v1/tours/:id")
+  .get(getTour)
+  .patch(updateTour)
+  .delete(deleteTour);
 
 app.listen(3000, () => {
   console.log("Listening to the server at port 3000...");
