@@ -17,6 +17,13 @@ app.get("/api/v1/tours", (req, res) => {
     .json({ status: "success", result: tours.length, data: { tours } });
 });
 
+// Handling URL paramaeters
+app.get("/api/v1/tours/:id/:x/:y", (req, res) => {
+  console.log(req.params);
+  
+  res.status(200).json({ status: "Success" });
+});
+
 // POST request
 app.post("/api/v1/tours", (req, res) => {
   console.log(req.body);
@@ -32,8 +39,6 @@ app.post("/api/v1/tours", (req, res) => {
       },
     });
   });
-
-  // res.end("Request sent!");
 });
 
 app.listen(3000, () => {
