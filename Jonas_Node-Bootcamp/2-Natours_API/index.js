@@ -18,10 +18,15 @@ app.get("/api/v1/tours", (req, res) => {
 });
 
 // Handling URL paramaeters
-app.get("/api/v1/tours/:id/:x/:y", (req, res) => {
+app.get("/api/v1/tours/:id", (req, res) => {
   console.log(req.params);
-  
-  res.status(200).json({ status: "Success" });
+  const id = req.params.id * 1; // req.params is a string, coverted to number
+  const tour = tours.find((el) => el.id === id);
+
+  // id > tours.length then tour will undefined
+  if (!tour)
+    res.status(404).json({ status: "Not found!", message: "Invalid ID" });
+  res.status(200).json({ status: "Success", data: tour });
 });
 
 // POST request
