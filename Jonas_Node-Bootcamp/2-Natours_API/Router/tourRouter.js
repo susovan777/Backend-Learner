@@ -1,5 +1,7 @@
 import express from "express";
 import {
+  checkID,
+  checkBody,
   getAllTours,
   getTour,
   createTour,
@@ -9,7 +11,9 @@ import {
 
 const tourRouter = express.Router();
 
-tourRouter.route("/").get(getAllTours).post(createTour);
+tourRouter.param("id", checkID);
+
+tourRouter.route("/").get(getAllTours).post(checkBody, createTour);
 tourRouter.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
 
 export { tourRouter }; // export method of ES6 module
