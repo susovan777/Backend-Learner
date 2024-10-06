@@ -29,6 +29,7 @@ import { userRouter } from "./Router/userRouter.js";
 
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
+app.use(express.static("./public"));
 
 // 🔸 4) Server
 // ↩️ Moved to Server.js file
