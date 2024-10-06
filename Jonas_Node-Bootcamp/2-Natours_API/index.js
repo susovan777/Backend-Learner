@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 });
 
 // 🔸 2) Route Handler
-// moved to a file for routes: tourRouter.js & userRouter.js and then imported the modules
+// ↩️ Moved to Controller folder and then imported the modules
 
 import { tourRouter } from "./Router/tourRouter.js";
 import { userRouter } from "./Router/userRouter.js";
@@ -25,10 +25,12 @@ import { userRouter } from "./Router/userRouter.js";
 // app.patch("/api/v1/tours/:id", updateTour);
 // app.delete("/api/v1/tours/:id", deleteTour);
 
+// ↩️ Moved to Router folder and used the routes
+
 app.use("/api/v1/tours", tourRouter);
 app.use("/api/v1/users", userRouter);
 
 // 🔸 4) Server
-app.listen(3000, () => {
-  console.log("Listening to the server at port 3000...");
-});
+// ↩️ Moved to Server.js file
+
+export { app };
