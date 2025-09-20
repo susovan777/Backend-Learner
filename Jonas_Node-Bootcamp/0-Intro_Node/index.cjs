@@ -17,12 +17,22 @@ const textOutput = `${input} \nToday is ${new Date()}, it's an amazing day!`;
 
 const http = require("http");
 
+const data = fs.readFileSync(`${__dirname}/../1-Node_Farm/dev-data/data.json`);
+// const objectData = JSON.parse(data);
+
 const server = http.createServer((req, res) => {
   const pathName = req.url;
 
   if (pathName === "/" || pathName === "/overview") res.end("This is OVERVIEW");
   else if (pathName === "/product") res.end("This is PRODUCT");
-  else {
+  else if (pathName === "/api") {
+    res.writeHead(200, {
+      "content-type": "application/json",
+    });
+    res.end(data);
+
+    // res.end("Api");
+  } else {
     res.writeHead(404, {
       "content-type": "text/html",
       "my-own-header": "hello-world",
