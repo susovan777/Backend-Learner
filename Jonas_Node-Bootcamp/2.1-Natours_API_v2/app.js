@@ -10,14 +10,8 @@ const tours = JSON.parse(
   fs.readFileSync(`./data/tours-simple.json`) // in case of CJS we could use __dirname instead of .
 );
 
-// GET request
-app.get("/", (req, res) => {
-  // res.status(200).send("Hello from the server!")
-  res.status(200).json({ message: "Hello from the server!", app: "natours" });
-});
-
-// GET all tours
-app.get("/api/v1/tours", (req, res) => {
+// Route handlers
+const getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
     result: tours.length,
@@ -25,14 +19,13 @@ app.get("/api/v1/tours", (req, res) => {
       tours,
     },
   });
-});
+};
 
-// GET tour by Id
-app.get("/api/v1/tours/:id", (req, res) => {
+const getTour = (req, res) => {
   console.log(req.params.id * 1);
 
   const tourId = req.params.id * 1;
-  const tourById = tours.filter(el => el.id === tourId)
+  const tourById = tours.filter((el) => el.id === tourId);
 
   if (req.params.id > tours.length) {
     return res.status(404).json({
@@ -48,10 +41,9 @@ app.get("/api/v1/tours/:id", (req, res) => {
       tour: tourById,
     },
   });
-});
+};
 
-// POST request
-app.post("/api/v1/tours", (req, res) => {
+const createTour = (req, res) => {
   // console.log("We can post to this endpoint!"); // this will print to the console
   // res.send("We can post to this endpoint!"); // this will print in the server
 
@@ -74,10 +66,9 @@ app.post("/api/v1/tours", (req, res) => {
       },
     })
   );
-});
+};
 
-// PATCH request
-app.patch("/api/v1/tours/:id", (req, res) => {
+const updateTour = (req, res) => {
   const tourId = req.params.id * 1;
 
   // logic to update the data ....
@@ -95,10 +86,9 @@ app.patch("/api/v1/tours/:id", (req, res) => {
       // updated tour here
     },
   });
-});
+};
 
-// DELETE request 
-app.delete("/api/v1/tours/:id", (req, res) => {
+const deleteTour = (req, res) => {
   const tourId = req.params.id * 1;
 
   // logic to delete the data ....
@@ -114,7 +104,28 @@ app.delete("/api/v1/tours/:id", (req, res) => {
     status: "success",
     data: null, // as of now no data to delete
   });
+};
+
+// GET request
+app.get("/", (req, res) => {
+  // res.status(200).send("Hello from the server!")
+  res.status(200).json({ message: "Hello from the server!", app: "natours" });
 });
+
+// GET all tours
+app.get("/api/v1/tours", getAllTours);
+
+// GET tour by Id
+app.get("/api/v1/tours/:id", getTour);
+
+// POST request
+app.post("/api/v1/tours", createTour);
+
+// PATCH request
+app.patch("/api/v1/tours/:id", updateTour);
+
+// DELETE request
+app.delete("/api/v1/tours/:id", deleteTour);
 
 app.listen(port, () => {
   console.log("Listening to the server at", port);
