@@ -4,13 +4,15 @@ import fs from "fs";
 const app = express();
 const port = 3000;
 
+// MIDDLEWARES
+
 app.use(express.json()); // This middleware parses JSON data from the request body
 
 const tours = JSON.parse(
   fs.readFileSync(`./data/tours-simple.json`) // in case of CJS we could use __dirname instead of .
 );
 
-// Route handlers
+// ROUTE HANDLERS
 const getAllTours = (req, res) => {
   res.status(200).json({
     status: "success",
@@ -106,14 +108,51 @@ const deleteTour = (req, res) => {
   });
 };
 
+const getAllUsers = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined",
+  });
+};
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined",
+  });
+};
+const createUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined",
+  });
+};
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined",
+  });
+};
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: "error",
+    message: "This route is not yet defined",
+  });
+};
+
 // GET request
 app.get("/", (req, res) => {
   // res.status(200).send("Hello from the server!")
   res.status(200).json({ message: "Hello from the server!", app: "natours" });
 });
 
+// ROUTES
+app.use("/api/v1/tours", tourRouter);
+const tourRouter = express.Router();
+const userRouter = express.Router();
+
+/* 
 // GET all tours
-app.get("/api/v1/tours", getAllTours);
+app.get("/", getAllTours);
 
 // GET tour by Id
 app.get("/api/v1/tours/:id", getTour);
@@ -127,6 +166,15 @@ app.patch("/api/v1/tours/:id", updateTour);
 // DELETE request
 app.delete("/api/v1/tours/:id", deleteTour);
 
+ */
+
+tourRouter.route("/").get(getAllTours).post(createTour);
+tourRouter.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
+
+userRouter.route("/").get(getAllUsers).post(createUser);
+userRouter.route("/:id").get(getUser).patch(updateUser).delete(deleteUser);
+
+// SERVER
 app.listen(port, () => {
   console.log("Listening to the server at", port);
 });
