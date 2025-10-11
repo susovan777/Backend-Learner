@@ -14,6 +14,7 @@ tourRouter.param('id', (req, res, next, val) => {
   next();
 })
 
+// chainable route handlers
 tourRouter.route("/").get(getAllTours).post(createTour);
 tourRouter.route("/:id").get(getTour).patch(updateTour).delete(deleteTour);
 
