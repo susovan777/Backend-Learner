@@ -9,10 +9,10 @@ const app = express();
 app.use(express.json()); // This middleware parses JSON data from the request body
 
 // GET request
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
   // res.status(200).send("Hello from the server!")
   res.status(200).json({ message: "Hello from the server!", app: "natours" });
-});
+}); */
 
 // ROUTES
 app.use("/api/v1/tours", tourRouter);
