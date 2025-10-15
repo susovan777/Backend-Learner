@@ -7,7 +7,7 @@ dotenv.config({ path: "./config.env" });
 const DB = process.env.DATABASE.replace("<PASSWORD>", process.env.PASSWORD);
 const DB_ = process.env.DATABASE_LOCAL
 
-mongoose.connect(DB_).then(() => {
+mongoose.connect(DB).then(() => {
   // console.log(con.connections);
   console.log("DB connection successful!");
 });
